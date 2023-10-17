@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89fbd9f6-6322-4cc1-a1c9-4146c49af8db" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/kafka-consumer-opensearch/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kafka-consumer-opensearch/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/kafka-consumer-opensearch/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka-consumer-opensearch/src/main/java/org/demo/OpenSearchConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/kafka-consumer-opensearch/src/main/java/org/demo/OpenSearchConsumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka-producer-wikimedia/src/main/java/org/demo/wikimedia/WikimediaChangesProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/kafka-producer-wikimedia/src/main/java/org/demo/wikimedia/WikimediaChangesProducer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +56,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Docker.kafka-consumer-opensearch: Compose Deployment">
+  <component name="RunManager" selected="Application.WikimediaChangesProducer">
     <configuration name="OpenSearchConsumer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.demo.OpenSearchConsumer" />
       <module name="kafka-consumer-opensearch" />
@@ -128,11 +126,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.kafka-consumer-opensearch: Compose Deployment" />
-        <item itemvalue="Docker.kafka-consumer-opensearch.opensearch-dashboards: Compose Deployment" />
-        <item itemvalue="Docker.kafka-consumer-opensearch.opensearch: Compose Deployment" />
         <item itemvalue="Application.WikimediaChangesProducer" />
         <item itemvalue="Application.OpenSearchConsumer" />
+        <item itemvalue="Docker.kafka-consumer-opensearch.opensearch-dashboards: Compose Deployment" />
+        <item itemvalue="Docker.kafka-consumer-opensearch.opensearch: Compose Deployment" />
+        <item itemvalue="Docker.kafka-consumer-opensearch: Compose Deployment" />
       </list>
     </recent_temporary>
   </component>
@@ -148,6 +146,8 @@
       <workItem from="1697280243040" duration="8984000" />
       <workItem from="1697392288226" duration="249000" />
       <workItem from="1697393335987" duration="599000" />
+      <workItem from="1697473990675" duration="2394000" />
+      <workItem from="1697559267878" duration="911000" />
     </task>
     <task id="LOCAL-00001" summary="pom xml configure">
       <option name="closed" value="true" />
@@ -197,7 +197,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697374877601</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="docker file created for openSearch">
+      <option name="closed" value="true" />
+      <created>1697474099601</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1697474099601</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -210,17 +218,7 @@
     <MESSAGE value="Wikimedia producer is done" />
     <MESSAGE value="open-search dependencies is set up" />
     <MESSAGE value="openSearchClient is created and openSearch index is exist" />
-    <option name="LAST_COMMIT_MESSAGE" value="openSearchClient is created and openSearch index is exist" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/kafka-consumer-opensearch/src/main/java/org/demo/OpenSearchConsumer.java</url>
-          <line>64</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="docker file created for openSearch" />
+    <option name="LAST_COMMIT_MESSAGE" value="docker file created for openSearch" />
   </component>
 </project>

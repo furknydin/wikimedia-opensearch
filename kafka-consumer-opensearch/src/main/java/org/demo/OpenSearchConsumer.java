@@ -1,5 +1,6 @@
 package org.demo;
 
+import com.google.gson.JsonParser;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -13,6 +14,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.opensearch.action.index.IndexRequest;
+import org.opensearch.action.index.IndexResponse;
 import org.opensearch.client.RequestOptions;
 import org.opensearch.client.RestClient;
 import org.opensearch.client.RestHighLevelClient;
@@ -62,15 +64,40 @@ public class OpenSearchConsumer {
 
             for (ConsumerRecord<String,String> record:records) {
                 //send record into openSearch
-                IndexRequest indexRequest = new IndexRequest("wikimedia")
-                        .source(record.value(), XContentType.JSON);
 
-                openSearchClient.index(indexRequest, RequestOptions.DEFAULT);
+                //At least once strategy 1
+                //define an id using kafka record coordinates
+                //String id = record.topic()+"_"+record.partition()+"_"+record.offset();
+
+                try{
+                    //At least once strategy 2
+                    //extract id from json value
+                    String id = extractId(record.value());
+
+                    IndexRequest indexRequest = new IndexRequest("wikimedia")
+                            .source(record.value(), XContentType.JSON)
+                            .id(id);
+
+                    IndexResponse response = openSearchClient.index(indexRequest, RequestOptions.DEFAULT);
+                    log.info(response.getId());
+                }catch (Exception e){
+
+                }
 
 
             }
         }
 
+    }
+
+    private static String extractId(String json){
+        //gson library
+        return JsonParser.parseString(json)
+                .getAsJsonObject()
+                .get("meta")
+                .getAsJsonObject()
+                .get("id")
+                .getAsString();
     }
 
     private static KafkaConsumer<String,String> createKafkaConsumer(){
