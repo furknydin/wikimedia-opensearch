@@ -12,7 +12,9 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.errors.WakeupException;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.opensearch.action.bulk.BulkRequest;
 import org.opensearch.action.index.IndexRequest;
 import org.opensearch.action.index.IndexResponse;
 import org.opensearch.client.RequestOptions;
@@ -40,52 +42,80 @@ public class OpenSearchConsumer {
         //create kafka client
         KafkaConsumer<String,String> consumer = createKafkaConsumer();
 
+        // get a reference to the main thread
+        final Thread mainThread = Thread.currentThread();
+
+        // adding the shutdown hook
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                log.info("Detected a shutdown, let's exit by calling consumer.wakeup()...");
+                consumer.wakeup();
+
+                // join the main thread to allow the execution of the code in the main thread
+                try {
+                    mainThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         //we need to create index on openSearch if it does not exist already
+        try {
+            boolean indexExist = openSearchClient.indices().exists(new GetIndexRequest("wikimedia"), RequestOptions.DEFAULT);
 
-        boolean indexExist = openSearchClient.indices().exists(new GetIndexRequest("wikimedia"), RequestOptions.DEFAULT);
-
-        if (!indexExist) {
-            CreateIndexRequest createIndexRequest = new CreateIndexRequest("wikimedia");
-            openSearchClient.indices().create(createIndexRequest, RequestOptions.DEFAULT);
-            log.info("The Wikimedia index has been created");
-        }else{
-            log.info("The Wikimedia index has been created");
-        }
+            if (!indexExist) {
+                CreateIndexRequest createIndexRequest = new CreateIndexRequest("wikimedia");
+                openSearchClient.indices().create(createIndexRequest, RequestOptions.DEFAULT);
+                log.info("The Wikimedia index has been created");
+            } else {
+                log.info("The Wikimedia index has been created");
+            }
 
 
-        //we subscribe the consumer
-        consumer.subscribe(Collections.singleton("wikimedia.recentchange"));
+            //we subscribe the consumer
+            consumer.subscribe(Collections.singleton("wikimedia.recentchange"));
 
-        while (true){
-            ConsumerRecords<String,String> records = consumer.poll(Duration.ofMillis(3000));
+            while (true) {
+                ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(3000));
 
-            int recordCount = records.count();
-            log.info("Received "+recordCount+" record(s)");
+                int recordCount = records.count();
+                log.info("Received " + recordCount + " record(s)");
 
-            for (ConsumerRecord<String,String> record:records) {
-                //send record into openSearch
+                for (ConsumerRecord<String, String> record : records) {
+                    //send record into openSearch
 
-                //At least once strategy 1
-                //define an id using kafka record coordinates
-                //String id = record.topic()+"_"+record.partition()+"_"+record.offset();
+                    //At least once strategy 1
+                    //define an id using kafka record coordinates
+                    //String id = record.topic()+"_"+record.partition()+"_"+record.offset();
+                    try {
+                        //At least once strategy 2
+                        //extract id from json value
+                        String id = extractId(record.value());
 
-                try{
-                    //At least once strategy 2
-                    //extract id from json value
-                    String id = extractId(record.value());
+                        IndexRequest indexRequest = new IndexRequest("wikimedia")
+                                .source(record.value(), XContentType.JSON)
+                                .id(id);
 
-                    IndexRequest indexRequest = new IndexRequest("wikimedia")
-                            .source(record.value(), XContentType.JSON)
-                            .id(id);
-
-                    IndexResponse response = openSearchClient.index(indexRequest, RequestOptions.DEFAULT);
-                    log.info(response.getId());
-                }catch (Exception e){
+                        IndexResponse response = openSearchClient.index(indexRequest, RequestOptions.DEFAULT);
+                        log.info(response.getId());
+                    } catch (Exception e) {
+                        log.info("Exception!!");
+                    }
+                    //commit offsets after the batch is consumed
+                    consumer.commitAsync();
+                    log.info("Offsets have been committed!");
 
                 }
-
-
             }
+        }catch (WakeupException e) {
+            log.info("Consumer is starting to shut down");
+        } catch (Exception e) {
+            log.error("Unexpected exception in the consumer", e);
+        } finally {
+            consumer.close(); // close the consumer, this will also commit offsets
+            openSearchClient.close();
+            log.info("The consumer is now gracefully shut down");
         }
 
     }

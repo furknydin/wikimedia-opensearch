@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="89fbd9f6-6322-4cc1-a1c9-4146c49af8db" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kafka-consumer-opensearch/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/kafka-consumer-opensearch/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kafka-consumer-opensearch/src/main/java/org/demo/OpenSearchConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/kafka-consumer-opensearch/src/main/java/org/demo/OpenSearchConsumer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,7 +55,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.WikimediaChangesProducer">
+  <component name="RunManager" selected="Application.OpenSearchConsumer">
     <configuration name="OpenSearchConsumer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.demo.OpenSearchConsumer" />
       <module name="kafka-consumer-opensearch" />
@@ -126,8 +125,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.WikimediaChangesProducer" />
         <item itemvalue="Application.OpenSearchConsumer" />
+        <item itemvalue="Application.WikimediaChangesProducer" />
         <item itemvalue="Docker.kafka-consumer-opensearch.opensearch-dashboards: Compose Deployment" />
         <item itemvalue="Docker.kafka-consumer-opensearch.opensearch: Compose Deployment" />
         <item itemvalue="Docker.kafka-consumer-opensearch: Compose Deployment" />
@@ -147,7 +146,7 @@
       <workItem from="1697392288226" duration="249000" />
       <workItem from="1697393335987" duration="599000" />
       <workItem from="1697473990675" duration="2394000" />
-      <workItem from="1697559267878" duration="911000" />
+      <workItem from="1697559267878" duration="4561000" />
     </task>
     <task id="LOCAL-00001" summary="pom xml configure">
       <option name="closed" value="true" />
@@ -205,7 +204,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697474099601</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="idempotent consumer is added">
+      <option name="closed" value="true" />
+      <created>1697560677005</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1697560677006</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -219,6 +226,7 @@
     <MESSAGE value="open-search dependencies is set up" />
     <MESSAGE value="openSearchClient is created and openSearch index is exist" />
     <MESSAGE value="docker file created for openSearch" />
-    <option name="LAST_COMMIT_MESSAGE" value="docker file created for openSearch" />
+    <MESSAGE value="idempotent consumer is added" />
+    <option name="LAST_COMMIT_MESSAGE" value="idempotent consumer is added" />
   </component>
 </project>
